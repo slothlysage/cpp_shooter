@@ -19,7 +19,7 @@ DEBUG = -g -fno-omit-frame-pointer -fsanitize=address
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) -lncurses $(OBJS) -o $@
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $@ -lncurses
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
@@ -28,7 +28,7 @@ debug: $(NAME)
 	$(CXX) $(CXXFLAGS) $(DEBUG) $(OBJS) -o $@
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) -f $(OBJS)
 
 fclean: clean
 	$(RM) $(NAME)
