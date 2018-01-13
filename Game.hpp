@@ -16,7 +16,7 @@
 # include <ctime>
 # include <string>
 # include <string.h>
-# include "player.hpp"
+# include "Player.hpp"
 # define MAX_ENEMIES 100
 
 enum			keys

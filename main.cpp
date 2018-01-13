@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "game.hpp"
-#include "player.hpp"
+#include "Game.hpp"
+#include "Player.hpp"
 #include <unistd.h>
 #define FRAME_RATE 60
 #define CLOCKS_PER_FRAME (CLOCKS_PER_SEC / FRAME_RATE)

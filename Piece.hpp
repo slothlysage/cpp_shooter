@@ -49,7 +49,6 @@ class			Piece {
 		bool	_crash;
 		int		_rtime;
 		int		_rspeed;
-
 };
 
 #endif
