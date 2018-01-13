@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 17:54:20 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 16:56:09 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/12 23:38:39 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class			Game
 		Game(Game const & other);
 		Game	&operator=(Game const & other);
 		void	resetParams();
+		void	resetGame(Player *player);
 		void	drawBorder();
 		void	loadScreen();
 		bool	menu();

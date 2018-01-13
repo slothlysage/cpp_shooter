@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 17:54:07 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 20:54:44 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/12 23:38:26 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ Game::Game() : _time(clock()), _end(false) {
 	getmaxyx(stdscr, _rows, _cols);
 	start_color();
 	init_pair(1,COLOR_CYAN,COLOR_BLACK);
+	init_pair(2,COLOR_RED,COLOR_BLACK);
+	init_pair(3,COLOR_GREEN,COLOR_BLACK);
 }
 
 Game::~Game() {
@@ -44,7 +46,14 @@ void	Game::resetParams() {
 	getmaxyx(stdscr, _rows, _cols);
 }
 
+void	Game::resetGame(Player *player) {
+	player->reset();
+	_time = clock();
+	_end = false;
+}
+
 void	Game::drawBorder() {
+	attron(COLOR_PAIR(3));
 	resetParams();
 	for (int i = 1; i < _cols - 1; i++) {
 		mvaddch(0,i,ACS_HLINE);
@@ -56,6 +65,7 @@ void	Game::drawBorder() {
 	mvaddch(0,_cols - 1,ACS_URCORNER);
 	mvaddch(_rows - 1,0,ACS_LLCORNER);
 	mvaddch(_rows - 1,_cols - 1,ACS_LRCORNER);
+	attroff(COLOR_PAIR(3));
 }
 
 void	Game::loadScreen() {
@@ -63,6 +73,7 @@ void	Game::loadScreen() {
 }
 
 bool	Game::menu() {
+	attron(COLOR_PAIR(3));
 	std::string greeting = "Prepare to Die";
 	std::string choices = "Press S to play or Q to quit";
 	int ch;
@@ -78,6 +89,7 @@ bool	Game::menu() {
 		if (ch == 'q' || ch == 'Q')
 			return false;
 	}
+	attroff(COLOR_PAIR(3));
 }
 
 void	Game::gameOver() {
@@ -92,6 +104,7 @@ void	Game::score(Player *player, int FPS)
 {
 	int w;
 
+	attron(COLOR_PAIR(3));
 	resetParams();
 	for (int i = 1; i < _cols - 1; i++) {
 		mvaddch(2,i,ACS_HLINE); }
@@ -111,7 +124,7 @@ void	Game::score(Player *player, int FPS)
 	mvaddch(2,2*w+2,ACS_BTEE);
 	mvaddch(2,4*w+4,ACS_BTEE);
 	mvaddch(2,6*w+6,ACS_BTEE);
-
+	attroff(COLOR_PAIR(3));
 }
 
 void	Game::move(Player *player, int ch) {
@@ -127,6 +140,16 @@ void	Game::move(Player *player, int ch) {
 	if (ch == SPACE)
 		player->shoot();
 	player->draw();
+	for (int i = 0; i < MAX_BULLETS; i++) {
+		if (!player->getBullet(i).isCrash()) {
+			player->getBullet(i).clear();
+			player->setBullet(i, player->getBullet(i).getX(), (player->getBullet(i).getY() + 1), false);
+			if (player->getBullet(i).getY() >= _cols - 2)
+				player->setBullet(i,0,0,true);
+			else
+				player->getBullet(i).draw();
+		}
+	}
 }
 
 void	Game::checkEnd(Player *player) {

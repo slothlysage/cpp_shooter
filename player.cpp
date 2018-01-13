@@ -6,13 +6,13 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 20:46:12 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 20:34:48 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/12 23:40:12 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "player.hpp"
 
-Player::Player() : Piece((char*)">==-",5,1,0,0), _lives(5), _score(0) {}
+Player::Player() : Piece((char*)">==-",5,2,0,0), _lives(5), _score(0) {}
 
 Player::~Player() {}
 
@@ -31,9 +31,15 @@ Player	&Player::operator=(Player const & other) {
 	return *this;
 }
 
+void	Player::reset() {
+	setxy(5,2);
+	_lives = 5;
+	_score = 0;
+}
+
 void	Player::draw() {
 	attron(COLOR_PAIR(1));
-	mvprintw(_x, _y, "%s", _icon);
+	Piece::draw();
 	attroff(COLOR_PAIR(1));
 }
 

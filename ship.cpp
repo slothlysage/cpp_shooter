@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 20:37:59 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 17:41:16 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/12 23:22:00 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,29 @@ void Ship::shoot() {
 	{
 		if (_bullets[i].isCrash())
 		{
-			_bullets[i].setxy(_x + strlen(_icon), _y);
+			_bullets[i].setxy(_x, _y + strlen(_icon));
 			_bullets[i].setCrash(false);
 			i = MAX_BULLETS;
 		}
 		else
 			i++;
 	}
+}
+
+void	Ship::draw() {
+	attron(COLOR_PAIR(2));
+	Piece::draw();
+	attroff(COLOR_PAIR(2));
+}
+
+Piece	Ship::getBullet(int i) {
+	if (i < MAX_BULLETS)
+		return _bullets[i];
+	return _bullets[0];
+}
+
+void	Ship::setBullet(int i, int x, int y, bool crash) {
+	if (i < MAX_BULLETS) {
+		_bullets[i].setxy(x, y);
+		_bullets[i].setCrash(crash); }
 }

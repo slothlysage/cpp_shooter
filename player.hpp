@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 20:43:32 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 20:32:15 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/12 23:39:07 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class Player : virtual public Ship
 		~Player();
 		Player(Player const & other);
 		Player	&operator=(Player const & other);
+		void	reset();
 		void	draw();
 		int		getLife();
 		int		getScore();

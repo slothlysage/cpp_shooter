@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/10 23:10:41 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 20:55:05 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/12 23:42:50 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	gameLoop(Game *game, Player *player) {
 	frames++;
 	if (lastSec / CLOCKS_PER_SEC != now / CLOCKS_PER_SEC)
 	{
+		clear();
 		lastSec = now;
 		FPS = frames;
 		frames = 0;
@@ -52,7 +53,9 @@ int main() {
 		playing = game->menu();
 		clear();
 		if (playing)
-			while (gameLoop(game, player)) {} }
+			while (gameLoop(game, player)) {} 
+		game->resetGame(player);
+	}
 	game->loadScreen();
 	delete(game);
 	delete(player);

@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 20:34:45 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 17:18:54 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/12 23:21:08 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ class Ship : virtual public Piece
 		Ship(Ship const & other);
 		Ship	&operator=(Ship const & other);
 		void	shoot();
+		void	draw();
+		Piece	getBullet(int i);
+		void	setBullet(int i, int x, int y, bool crash);
 	protected:
 		Piece	_bullets[MAX_BULLETS];
 };
