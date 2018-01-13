@@ -11,18 +11,27 @@
 # **************************************************************************** #
 
 NAME = test
-SRCS = game.cpp game.hpp piece.cpp piece.hpp player.cpp player.hpp ship.cpp ship.hpp main.cpp
-OBJS = game.o piece.o player.o ship.o main.o
+INCLUDES = -I .
+OBJS = Game.o Piece.o Player.o Ship.o main.o
 CXXFLAGS = -Wall -Werror -Wextra
 DEBUG = -g -fno-omit-frame-pointer -fsanitize=address
+
 all: $(NAME)
+
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -lncurses $(OBJS) -o $@
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
+
 debug: $(NAME)
 	$(CXX) $(CXXFLAGS) $(DEBUG) $(OBJS) -o $@
+
 clean:
 	$(RM) $(OBJS)
+
 fclean: clean
 	$(RM) $(NAME)
+
 re: fclean all
 .PHONY:re fclean clean all

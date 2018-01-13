@@ -12,12 +12,13 @@
 
 #ifndef SHIP_HPP
 # define SHIP_HPP
-# include "piece.hpp"
+# include "Piece.hpp"
 # define MAX_BULLETS 10
 
-class Ship : virtual public Piece
-{
+class Ship : virtual public Piece {
+
 	public:
+	
 		Ship();
 		~Ship();
 		Ship(Ship const & other);
@@ -26,8 +27,11 @@ class Ship : virtual public Piece
 		void	draw();
 		Piece	getBullet(int i);
 		void	setBullet(int i, int x, int y, bool crash);
+
 	protected:
+
 		Piece	_bullets[MAX_BULLETS];
+
 };
 
 #endif

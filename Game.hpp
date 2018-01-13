@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game.hpp                                           :+:      :+:    :+:   */
+/*   Game.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 17:54:20 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/13 15:01:52 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/13 15:50:20 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@
 # include <ctime>
 # include <string>
 # include <string.h>
-# include "player.hpp"
+# include "Player.hpp"
 # define MAX_ENEMIES 100
 
-enum			keys
-{
+enum			keys {
 	ESC = 27,
 	SPACE = 32,
 	UP = 259,
@@ -32,6 +31,7 @@ enum			keys
 class				Game
 {
 	public:
+
 		Game();
 		~Game();
 		Game(Game const & other);
@@ -49,12 +49,14 @@ class				Game
 		int		getRows();
 		int		getCols();
 		bool	isEnd();
+
 	private:
 		Ship	_enemies[MAX_ENEMIES];
 		clock_t	_time;
 		int		_rows;
 		int		_cols;
 		bool	_end;
+
 };
 
 #endif

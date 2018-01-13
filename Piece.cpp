@@ -10,15 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "piece.hpp"
+#include "Piece.hpp"
 
 Piece::Piece() {
 	char icon[] = "*";
 	Piece(icon, 0, 0, 0, 0);
 }
 
-Piece::Piece(char *icon, int x, int y, int rtime, int rspeed) :
-	_icon(icon), _x(x), _y(y), _crash(false), _rtime(rtime), _rspeed(rspeed) {
+Piece::Piece(std::string icon, int x, int y, int rtime, int rspeed) :
+	_icon(icon), 
+	_x(x), 
+	_y(y), 
+	_crash(false), 
+	_rtime(rtime), 
+	_rspeed(rspeed) 
+{
+	return ;
 }
 
 Piece::~Piece() {}
@@ -30,11 +37,13 @@ Piece::Piece(Piece const & other) {
 	this->_crash = other._crash;
 	this->_rtime = other._rtime;
 	this->_rspeed = other._rspeed;
+	return ;
 }
 
 Piece	&Piece::operator=(Piece const & other) {
-	if (this == &other)
+	if (this == &other) {
 		return *this;
+	}
 	this->_icon = other._icon;
 	this->_x = other._x;
 	this->_y = other._y;
@@ -49,11 +58,12 @@ void	Piece::draw() {
 }
 
 void	Piece::clear() {
-	for (int i = 0; i < (int)strlen(_icon); i++)
+	for (int i = 0; i < (int)_icon.length(); i++) {
 		mvaddch(_x,_y + i,' ');
+	}
 }
 
-void	Piece::setIcon(char *icon) {
+void	Piece::setIcon(std::string icon) {
 	_icon = icon;
 }
 
@@ -82,7 +92,7 @@ void	Piece::setRspeed(int rspeed) {
 	_rspeed = rspeed;
 }
 
-char	*Piece::getIcon() {
+std::string Piece::getIcon() {
 	return _icon;
 }
 
