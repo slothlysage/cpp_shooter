@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 17:54:20 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 23:38:39 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/13 15:01:52 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ enum			keys
 	RIGHT = 261
 };
 
-class			Game
+class				Game
 {
 	public:
 		Game();
@@ -42,6 +42,7 @@ class			Game
 		void	loadScreen();
 		bool	menu();
 		void	gameOver();
+		void	spawn();
 		void	score(Player *player, int FPS);
 		void	move(Player *player, int ch);
 		void	checkEnd(Player *player);
@@ -49,7 +50,7 @@ class			Game
 		int		getCols();
 		bool	isEnd();
 	private:
-//		Ship	*enemies[100];
+		Ship	_enemies[MAX_ENEMIES];
 		clock_t	_time;
 		int		_rows;
 		int		_cols;

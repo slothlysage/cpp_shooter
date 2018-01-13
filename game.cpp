@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 17:54:07 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 23:38:26 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/13 15:45:44 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	Game::drawBorder() {
 	mvaddch(_rows - 1,0,ACS_LLCORNER);
 	mvaddch(_rows - 1,_cols - 1,ACS_LRCORNER);
 	attroff(COLOR_PAIR(3));
+	for (int i = 0; i < MAX_ENEMIES; i++)
+		_enemies[i].setCrash(true);
 }
 
 void	Game::loadScreen() {
@@ -98,6 +100,25 @@ void	Game::gameOver() {
 	clear();
 	drawBorder();
 	mvprintw(((_rows / 2)), ((_cols / 2) - (dead.length() / 2)),"%s",dead.c_str());
+}
+
+void	Game::spawn() {
+	int     i;
+
+	i = 0;
+	while (i < MAX_ENEMIES)
+	{
+		if (_enemies[i].isCrash())
+		{
+			_enemies[i].setxy(((rand() % (_rows - 4)) + 3), (_cols - strlen(_enemies[i].getIcon()) - 1));
+			mvprintw(3 + i, 2, "%d:%dof%d",_enemies[i].getX(),_enemies[i].getY(),_cols);
+			_enemies[i].setCrash(false);
+			_enemies[i].draw();
+			i = MAX_ENEMIES;
+		}
+		else
+			i++;
+	}
 }
 
 void	Game::score(Player *player, int FPS)
@@ -148,6 +169,18 @@ void	Game::move(Player *player, int ch) {
 				player->setBullet(i,0,0,true);
 			else
 				player->getBullet(i).draw();
+		}
+	}
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (!_enemies[i].isCrash()) {
+			_enemies[i].clear();
+			mvprintw(4, 2,"%4d:",_enemies[i].getY());
+			_enemies[i].setY(_enemies[i].getY() - 1);
+			mvprintw(4, 8,"%4d",_enemies[i].getY());
+			if (_enemies[i].getY() <= 2)
+				_enemies[i].setCrash(true);
+			else
+				_enemies[i].draw();
 		}
 	}
 }
