@@ -10,27 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ship.hpp"
+#include "Ship.hpp"
 
-Ship::Ship() : Piece((char*)"<-", 0, 0, 0, 0) {
+Ship::Ship() : 
+	Piece("<-", 0, 0, 0, 0) 
+{
 	for (int i = 0; i < MAX_BULLETS; i++){
-		_bullets[i].setIcon((char *)"~");
+		_bullets[i].setIcon("~");
 		_bullets[i].setCrash(true);
 	}
 }
 
-Ship::~Ship() {}
+Ship::~Ship() {
+	return ;
+}
 
-Ship::Ship(Ship const & other) {
-	this->operator=(other);
+Ship::Ship(Ship const & other) :
+	Piece(
+		other._icon, 
+		other._x, 
+		other._y, 
+		other._rtime, 
+		other._rspeed
+	)
+{
+	return ;
 }
 
 Ship	&Ship::operator=(Ship const & other) {
-	if (this == &other)
+	if (this == &other) {
 		return *this;
+	}
 	this->_x = other._x;
 	this->_y = other._y;
 	this->_icon = other._icon;
+	this->_rtime = other._rtime; 
+	this->_rspeed = other._rspeed;
 	return *this;
 }
 
@@ -42,7 +57,7 @@ void Ship::shoot() {
 	{
 		if (_bullets[i].isCrash())
 		{
-			_bullets[i].setxy(_x, _y + strlen(_icon));
+			_bullets[i].setxy(_x, _y + _icon.length());
 			_bullets[i].setCrash(false);
 			i = MAX_BULLETS;
 		}

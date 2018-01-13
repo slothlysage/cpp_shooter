@@ -12,11 +12,12 @@
 
 #ifndef PLAYER_HPP
 # define PLAYER_HPP
-# include "ship.hpp"
+# include "Ship.hpp"
 
-class Player : virtual public Ship
-{
+class Player : virtual public Ship {
+	
 	public:
+
 		Player();
 		~Player();
 		Player(Player const & other);
@@ -25,9 +26,11 @@ class Player : virtual public Ship
 		void	draw();
 		int		getLife();
 		int		getScore();
+	
 	private:
 		int		_lives;
 		int		_score;
+
 };
 
 #endif

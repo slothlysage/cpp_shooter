@@ -14,32 +14,36 @@
 # define PIECE_HPP
 # include <ncurses.h>
 # include <string.h>
+# include <iostream>
 
-class			Piece
-{
+class			Piece {
+
 	public:
+	
 		Piece();
-		Piece(char *icon, int x, int y, int rtime, int rspeed);
+		Piece(std::string icon, int x, int y, int rtime, int rspeed);
 		~Piece();
 		Piece(Piece const & other);
 		Piece	&operator=(Piece const & other);
 		void	draw();
 		void	clear();
-		void	setIcon(char *icon);
+		void	setIcon(std::string icon);
 		void	setxy(int x, int y);
 		void	setX(int x);
 		void	setY(int y);
 		void	setCrash(bool crash);
 		void	setRtime(int rtime);
 		void	setRspeed(int rspeed);
-		char	*getIcon();
+		std::string getIcon();
 		int		getX();
 		int		getY();
 		bool	isCrash();
 		int		getRtime();
 		int		getRspeed();
+
 	protected:
-		char	*_icon;
+
+		std::string _icon;
 		int		_x;
 		int		_y;
 		bool	_crash;
