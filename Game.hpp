@@ -19,8 +19,7 @@
 # include "Player.hpp"
 # define MAX_ENEMIES 100
 
-enum			keys
-{
+enum			keys {
 	ESC = 27,
 	SPACE = 32,
 	UP = 259,
@@ -29,9 +28,10 @@ enum			keys
 	RIGHT = 261
 };
 
-class			Game
-{
+class			Game {
+	
 	public:
+
 		Game();
 		~Game();
 		Game(Game const & other);
@@ -48,12 +48,15 @@ class			Game
 		int		getRows();
 		int		getCols();
 		bool	isEnd();
+
 	private:
+
 //		Ship	*enemies[100];
 		clock_t	_time;
 		int		_rows;
 		int		_cols;
 		bool	_end;
+
 };
 
 #endif

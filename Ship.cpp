@@ -57,7 +57,7 @@ void Ship::shoot() {
 	{
 		if (_bullets[i].isCrash())
 		{
-			_bullets[i].setxy(_x, _y + strlen(_icon));
+			_bullets[i].setxy(_x, _y + _icon.length());
 			_bullets[i].setCrash(false);
 			i = MAX_BULLETS;
 		}

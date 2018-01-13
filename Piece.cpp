@@ -58,7 +58,7 @@ void	Piece::draw() {
 }
 
 void	Piece::clear() {
-	for (int i = 0; i < _icon.length(); i++) {
+	for (int i = 0; i < (int)_icon.length(); i++) {
 		mvaddch(_x,_y + i,' ');
 	}
 }

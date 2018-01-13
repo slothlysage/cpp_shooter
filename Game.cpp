@@ -24,9 +24,9 @@ Game::Game() :
 	keypad(stdscr, TRUE);
 	getmaxyx(stdscr, _rows, _cols);
 	start_color();
-	init_pair(1,COLOR_CYAN,COLOR_BLACK);
-	init_pair(2,COLOR_RED,COLOR_BLACK);
-	init_pair(3,COLOR_GREEN,COLOR_BLACK);
+	init_pair(1, COLOR_CYAN, COLOR_BLACK);
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	init_pair(3, COLOR_GREEN, COLOR_BLACK);
 	return ;
 }
 
@@ -36,9 +36,9 @@ Game::~Game() {
 }
 
 Game::Game(Game const & other) : 
+	_time(other._time),
 	_rows(other._rows),
 	_cols(other._cols),
-	_time(other._time),
 	_end(other._end)
 {
 	return ;
@@ -102,6 +102,7 @@ bool	Game::menu() {
 			return false;
 	}
 	attroff(COLOR_PAIR(3));
+	return false;
 }
 
 void	Game::gameOver() {
@@ -141,14 +142,20 @@ void	Game::score(Player *player, int FPS)
 
 void	Game::move(Player *player, int ch) {
 	player->clear();
-	if (ch == UP && player->getX() > 3)
+	if (ch == UP && player->getX() > 3) {
 		player->setxy(player->getX() - 1, player->getY());
-	if (ch == DOWN && player->getX() < _rows - 2)
+	}
+	if (ch == DOWN && player->getX() < _rows - 2) {
 		player->setxy(player->getX() + 1, player->getY());
-	if (ch == LEFT && player->getY() > 1)
+	}
+	if (ch == LEFT && player->getY() > 1) {
 		player->setxy(player->getX(), player->getY() - 1);
-	if (ch == RIGHT && player->getY() < _cols - player->getIcon().length() - 1)
+	}
+	if (ch == RIGHT && 
+			player->getY() < (int)(_cols - player->getIcon().length() - 1))
+	{
 		player->setxy(player->getX(), player->getY() + 1);
+	}
 	if (ch == SPACE)
 		player->shoot();
 	player->draw();
@@ -156,10 +163,11 @@ void	Game::move(Player *player, int ch) {
 		if (!player->getBullet(i).isCrash()) {
 			player->getBullet(i).clear();
 			player->setBullet(i, player->getBullet(i).getX(), (player->getBullet(i).getY() + 1), false);
-			if (player->getBullet(i).getY() >= _cols - 2)
+			if (player->getBullet(i).getY() >= _cols - 2) {
 				player->setBullet(i,0,0,true);
-			else
+			} else {
 				player->getBullet(i).draw();
+			}
 		}
 	}
 }

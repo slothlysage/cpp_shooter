@@ -32,6 +32,7 @@ Player::Player(Player const & other) :
 		other._rtime, 
 		other._rspeed
 	),
+	Ship(),
 	_lives(other._lives),
 	_score(other._score)
 {
