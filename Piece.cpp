@@ -54,7 +54,7 @@ Piece	&Piece::operator=(Piece const & other) {
 }
 
 void	Piece::draw() {
-	mvprintw(_x, _y, "%s", _icon);
+	mvprintw(_x, _y, "%s", _icon.c_str());
 }
 
 void	Piece::clear() {
