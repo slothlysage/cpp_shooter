@@ -30,6 +30,7 @@ Game::Game() :
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		_enemies[i].setCrash(true);
 	}
+	_stars = new Stars(MAX_STARS, 15, _rows, _cols);
 	return ;
 }
 
@@ -181,6 +182,9 @@ void	Game::move(Player *player, int ch) {
 	if (ch == SPACE) {
 		player->shoot();
 	}
+	_stars->move();
+	_stars->setX(_rows);
+	_stars->setY(_cols);
 	_playerEnemyCollision(player);
 	player->draw();
 	for (int i = 0; i < MAX_BULLETS; i++) {
@@ -198,6 +202,7 @@ void	Game::move(Player *player, int ch) {
 			}
 		}
 	}
+
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (!_enemies[i].isCrash()) {
 			_enemies[i].clear();
@@ -247,7 +252,9 @@ bool Game::_playerCollision(int x, int y, Player * player) {
 bool Game::_enemyCollision(int x, int y) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (!_enemies[i].isCrash()) {
-			if (_enemies[i].getX() == x && (_enemies[i].getY() - y <= 1)) {
+			if (_enemies[i].getX() == x && 
+					(y <= _enemies[i].getY()) &&
+					(_enemies[i].getY() - y <= 1)) {
 				_enemies[i].setCrash(true);
 				_enemies[i].explode();
 				return true;

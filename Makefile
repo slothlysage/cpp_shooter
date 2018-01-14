@@ -12,7 +12,7 @@
 
 NAME = test
 INCLUDES = -I .
-OBJS = Game.o Piece.o Player.o Ship.o main.o
+OBJS = Game.o Piece.o Player.o Ship.o main.o Stars.o
 CXXFLAGS = -Wall -Werror -Wextra
 DEBUG = -g -fno-omit-frame-pointer -fsanitize=address
 
