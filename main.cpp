@@ -13,6 +13,7 @@
 #include "Game.hpp"
 #include "Player.hpp"
 #include <unistd.h>
+#include <signal.h>
 #define FRAME_RATE 60
 #define CLOCKS_PER_FRAME (CLOCKS_PER_SEC / FRAME_RATE)
 
@@ -50,14 +51,23 @@ int main() {
 	bool playing = true;
 
 	game->loadScreen();
-	while (playing) {
-		playing = game->menu();
-		clear();
-		while (playing && gameLoop(game, player)) {}
-		game->resetGame(player);
-	}
+	pid_t pid = fork();
+	if (pid == 0)
+		system("while :; do afplay sfx/music.mp3; done");
+	else
+	{
+		while (playing) {
+			playing = game->menu();
+			clear();
+			while (playing && gameLoop(game, player)) {}
+			game->resetGame(player);
+		}
 	game->loadScreen();
 	delete(game);
 	delete(player);
+	}
+	std::cout << pid;
+	kill(pid + 1, SIGKILL);
+	system("killall afplay");
 	return (0);
-}
+	}

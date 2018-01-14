@@ -12,8 +12,8 @@
 
 #include "Ship.hpp"
 
-Ship::Ship() : 
-	Piece("<-", 0, 0, 0, 0) 
+Ship::Ship() :
+	Piece("<-", 0, 0, 0, 0)
 {
 	for (int i = 0; i < MAX_BULLETS; i++){
 		_bullets[i].setIcon("~");
@@ -27,10 +27,10 @@ Ship::~Ship() {
 
 Ship::Ship(Ship const & other) :
 	Piece(
-		other._icon, 
-		other._x, 
-		other._y, 
-		other._rtime, 
+		other._icon,
+		other._x,
+		other._y,
+		other._rtime,
 		other._rspeed
 	)
 {
@@ -44,7 +44,7 @@ Ship	&Ship::operator=(Ship const & other) {
 	this->_x = other._x;
 	this->_y = other._y;
 	this->_icon = other._icon;
-	this->_rtime = other._rtime; 
+	this->_rtime = other._rtime;
 	this->_rspeed = other._rspeed;
 	return *this;
 }
@@ -67,6 +67,7 @@ void Ship::shoot() {
 
 void Ship::explode() {
 	clear();
+	system("afplay sfx/explode.wav &");
 	mvaddch(_x,_y, '*');
 	mvaddch(_x + 1 ,_y + 1, '.');
 	mvaddch(_x - 1 ,_y + 1, '.');
@@ -87,6 +88,6 @@ Piece	Ship::getBullet(int i) {
 void	Ship::setBullet(int i, int x, int y, bool crash) {
 	if (i < MAX_BULLETS) {
 		_bullets[i].setxy(x, y);
-		_bullets[i].setCrash(crash); 
+		_bullets[i].setCrash(crash);
 	}
 }
