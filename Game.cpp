@@ -27,6 +27,9 @@ Game::Game() :
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	init_pair(3, COLOR_GREEN, COLOR_BLACK);
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		_enemies[i].setCrash(true);
+	}
 	return ;
 }
 
@@ -45,8 +48,9 @@ Game::Game(Game const & other) :
 }
 
 Game	&Game::operator=(Game const & other) {
-	if (this == &other)
+	if (this == &other) {
 		return *this;
+	}
 	this->_rows = other._rows;
 	this->_cols = other._cols;
 	this->_time = other._time;
@@ -78,8 +82,6 @@ void	Game::drawBorder() {
 	mvaddch(_rows - 1,0,ACS_LLCORNER);
 	mvaddch(_rows - 1,_cols - 1,ACS_LRCORNER);
 	attroff(COLOR_PAIR(3));
-	for (int i = 0; i < MAX_ENEMIES; i++)
-		_enemies[i].setCrash(true);
 }
 
 void	Game::loadScreen() {
@@ -116,21 +118,12 @@ void	Game::gameOver() {
 }
 
 void	Game::spawn() {
-	int     i;
-
-	i = 0;
-	while (i < MAX_ENEMIES)
-	{
-		if (_enemies[i].isCrash())
-		{
-			_enemies[i].setxy(((rand() % (_rows - 4)) + 3), (_cols - strlen(_enemies[i].getIcon()) - 1));
-			mvprintw(3 + i, 2, "%d:%dof%d",_enemies[i].getX(),_enemies[i].getY(),_cols);
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (_enemies[i].isCrash()) {
+			_enemies[i].setxy(((std::rand() % (_rows - 4)) + 3), (_cols - _enemies[i].getIcon().length() - 1));
 			_enemies[i].setCrash(false);
-			_enemies[i].draw();
-			i = MAX_ENEMIES;
+			break;
 		}
-		else
-			i++;
 	}
 }
 
@@ -177,16 +170,21 @@ void	Game::move(Player *player, int ch) {
 	{
 		player->setxy(player->getX(), player->getY() + 1);
 	}
-	if (ch == SPACE)
+	if (ch == SPACE) {
 		player->shoot();
+	}
 	player->draw();
 	for (int i = 0; i < MAX_BULLETS; i++) {
 		if (!player->getBullet(i).isCrash()) {
-			player->getBullet(i).clear();
-			player->setBullet(i, player->getBullet(i).getX(), (player->getBullet(i).getY() + 1), false);
-			if (player->getBullet(i).getY() >= _cols - 2) {
-				player->setBullet(i,0,0,true);
+			Piece bullet = player->getBullet(i);
+			bullet.clear();
+			if (_enemyCollision(bullet.getX(), bullet.getY() + 1)) {
+					player->setScore(player->getScore() + 1);
+					player->setBullet(i,0,0,true);
+			} else if (bullet.getY() >= _cols - 2) {
+					player->setBullet(i,0,0,true);
 			} else {
+				player->setBullet(i, player->getBullet(i).getX(), (player->getBullet(i).getY() + 1), false);
 				player->getBullet(i).draw();
 			}
 		}
@@ -194,15 +192,28 @@ void	Game::move(Player *player, int ch) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (!_enemies[i].isCrash()) {
 			_enemies[i].clear();
-			mvprintw(4, 2,"%4d:",_enemies[i].getY());
 			_enemies[i].setY(_enemies[i].getY() - 1);
-			mvprintw(4, 8,"%4d",_enemies[i].getY());
-			if (_enemies[i].getY() <= 2)
+			if (_enemies[i].getY() <= 2) {
 				_enemies[i].setCrash(true);
-			else
+			} else {
 				_enemies[i].draw();
+			}
 		}
 	}
+}
+
+bool Game::_enemyCollision(int x, int y) {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (!_enemies[i].isCrash()) {
+			if (_enemies[i].getX() == x && (_enemies[i].getY() - y <= 1)) {
+				_enemies[i].setCrash(true);
+				_enemies[i].clear();
+				_enemies[i].explode();
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void	Game::checkEnd(Player *player) {

@@ -53,8 +53,7 @@ int main() {
 	while (playing) {
 		playing = game->menu();
 		clear();
-		if (playing)
-			while (gameLoop(game, player)) {}
+		while (playing && gameLoop(game, player)) {}
 		game->resetGame(player);
 	}
 	game->loadScreen();
