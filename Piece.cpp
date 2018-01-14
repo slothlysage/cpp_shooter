@@ -57,6 +57,10 @@ void	Piece::draw() {
 	mvprintw(_x, _y, "%s", _icon.c_str());
 }
 
+void 	Piece::drawxy(int x, int y) {
+	mvprintw(x, y, "%s", _icon.c_str());
+}
+
 void	Piece::clear() {
 	for (int i = 0; i < (int)_icon.length(); i++) {
 		mvaddch(_x,_y + i,' ');
