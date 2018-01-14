@@ -127,6 +127,14 @@ void	Game::spawn() {
 	}
 }
 
+void Game::alignPlayer(Player * player) {
+	if (player->getX() > _rows) {
+		player->clear();
+		player->setX(_rows - 2);
+		player->draw();
+	}
+}
+
 void	Game::score(Player *player, int FPS)
 {
 	int w;

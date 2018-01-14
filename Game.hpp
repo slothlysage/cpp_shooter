@@ -49,8 +49,10 @@ class				Game {
 		int		getRows();
 		int		getCols();
 		bool	isEnd();
-
+		void alignPlayer(Player * player);
+		
 	private:
+
 		Ship	_enemies[MAX_ENEMIES];
 		bool _playerEnemyCollision(Player * player);
 		bool _enemyCollision(int x, int y);

@@ -52,7 +52,9 @@ Player	&Player::operator=(Player const & other) {
 	this->_y = other._y;
 	this->_rtime = other._rtime;
 	this->_rspeed = other._rspeed;
-
+	this->_blinks = other._blinks;
+	this->_blinkCount = other._blinkCount;
+	
 	return *this;
 }
 
@@ -60,6 +62,8 @@ void	Player::reset() {
 	setxy(5,2);
 	_lives = 5;
 	_score = 0;
+	_blinks = 0;
+	_blinkCount = 0;
 }
 
 void	Player::draw() {
