@@ -17,7 +17,9 @@
 # include <string>
 # include <cstdlib>
 # include "Player.hpp"
+# include "Stars.hpp"
 # define MAX_ENEMIES 100
+# define MAX_STARS 20
 
 enum			keys {
 	ESC = 27,
@@ -49,14 +51,19 @@ class				Game {
 		int		getRows();
 		int		getCols();
 		bool	isEnd();
+		void alignPlayer(Player * player);
 
 	private:
-		Ship	_enemies[MAX_ENEMIES];
-		bool _enemyCollision(int x, int y);
+
+		Ship		_enemies[MAX_ENEMIES];
+		Stars		*_stars;
+		bool 		_playerEnemyCollision(Player * player);
+		bool 		_enemyCollision(int x, int y);
+		bool 		_playerCollision(int x, int y, Player * player);
 		clock_t	_time;
-		int		_rows;
-		int		_cols;
-		bool	_end;
+		int			_rows;
+		int			_cols;
+		bool		_end;
 
 };
 

@@ -68,8 +68,8 @@ void Ship::shoot() {
 void Ship::explode() {
 	clear();
 	mvaddch(_x,_y, '*');
-	mvaddch(_x + 1 ,_y + 1, '.');
-	mvaddch(_x - 1 ,_y + 1, '.');
+	mvaddch(_x + 1 ,_y + 1, '*');
+	mvaddch(_x - 1 ,_y + 1, '*');
 }
 
 void	Ship::draw() {

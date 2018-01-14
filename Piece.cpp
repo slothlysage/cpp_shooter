@@ -23,7 +23,7 @@ Piece::Piece(std::string icon, int x, int y, int rtime, int rspeed) :
 	_y(y), 
 	_crash(false), 
 	_rtime(rtime), 
-	_rspeed(rspeed) 
+	_rspeed(rspeed)
 {
 	return ;
 }
