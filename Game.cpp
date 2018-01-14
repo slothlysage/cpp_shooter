@@ -136,7 +136,7 @@ void	Game::score(Player *player, int FPS)
 	for (int i = 1; i < _cols - 1; i++) {
 		mvaddch(2,i,ACS_HLINE); }
 	w = (_cols / 8) - 1;
-	mvprintw(1,1,"%*s:%-*d",w,"Lives",w,player->getLife());
+	mvprintw(1,1,"%*s:%-*d",w,"Lives",w,player->getLives());
 	addch(ACS_VLINE);
 	printw("%*s:%-*d",w,"Score",w,player->getScore());
 	addch(ACS_VLINE);
@@ -173,6 +173,7 @@ void	Game::move(Player *player, int ch) {
 	if (ch == SPACE) {
 		player->shoot();
 	}
+	_playerEnemyCollision(player);
 	player->draw();
 	for (int i = 0; i < MAX_BULLETS; i++) {
 		if (!player->getBullet(i).isCrash()) {
@@ -202,12 +203,44 @@ void	Game::move(Player *player, int ch) {
 	}
 }
 
+bool Game::_playerEnemyCollision(Player * player) {
+	for (int i; i < MAX_ENEMIES; i++) {
+		if (
+			!_enemies[i].isCrash() &&
+			_playerCollision(
+				_enemies[i].getX(), 
+				_enemies[i].getY(), 
+				player
+			)
+		) 
+		{
+			_enemies[i].setCrash(true);
+			_enemies[i].explode();
+			return true;
+		}
+	}
+	return true;
+}
+
+bool Game::_playerCollision(int x, int y, Player * player) {
+	if (
+		(player->getX() - x == 0) && 
+		((y - player->getY() <= 4) &&
+		 (y - player->getY() >= 0))
+	) {
+		player->blink(11);
+		player->setLives(player->getLives() - 1);
+		return true;
+	} else {
+		return false;
+	}
+}
+
 bool Game::_enemyCollision(int x, int y) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (!_enemies[i].isCrash()) {
 			if (_enemies[i].getX() == x && (_enemies[i].getY() - y <= 1)) {
 				_enemies[i].setCrash(true);
-				_enemies[i].clear();
 				_enemies[i].explode();
 				return true;
 			}
@@ -217,7 +250,7 @@ bool Game::_enemyCollision(int x, int y) {
 }
 
 void	Game::checkEnd(Player *player) {
-	if (player->getLife() == 0)
+	if (player->getLives() == 0)
 		_end = true;
 }
 

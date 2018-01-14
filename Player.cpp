@@ -15,7 +15,9 @@
 Player::Player() : 
 	Piece(">==-", 5, 2, 0, 0), 
 	_lives(5), 
-	_score(0) 
+	_score(0),
+	_blinkCount(0),
+	_blinks(0)
 {
 	return ;
 }
@@ -61,13 +63,29 @@ void	Player::reset() {
 }
 
 void	Player::draw() {
-	attron(COLOR_PAIR(1));
-	Piece::draw();
-	attroff(COLOR_PAIR(1));
+	if (_lives > 0) {
+		attron(COLOR_PAIR(1));
+		if (_blinks > 0) {
+			_blinkCount++;
+			if (_blinkCount > 10) {
+				_blinkCount = 0;
+				_blinks--;
+			}
+		} 
+		if (!(_blinks % 2)) {
+			Piece::draw();
+		}
+		attroff(COLOR_PAIR(1));
+	}
 }
 
-int		Player::getLife() const {
+int		Player::getLives() const {
 	return _lives;
+}
+
+void Player::setLives(int lives) {
+	_lives = lives;
+	return ;
 }
 
 void	Player::setScore(int score) {
@@ -78,3 +96,9 @@ void	Player::setScore(int score) {
 int		Player::getScore() const {
 	return _score;
 }
+
+void	Player::blink(int times) {
+	_blinks = times;
+	return ;
+}
+
