@@ -66,10 +66,15 @@ void	Player::draw() {
 	attroff(COLOR_PAIR(1));
 }
 
-int		Player::getLife() {
+int		Player::getLife() const {
 	return _lives;
 }
 
-int		Player::getScore() {
+void	Player::setScore(int score) {
+	_score = score;
+	return ;
+}
+
+int		Player::getScore() const {
 	return _score;
 }

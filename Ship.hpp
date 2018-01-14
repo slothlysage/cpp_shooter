@@ -25,6 +25,7 @@ class Ship : virtual public Piece {
 		Ship	&operator=(Ship const & other);
 		void	shoot();
 		void	draw();
+		void	explode();
 		Piece	getBullet(int i);
 		void	setBullet(int i, int x, int y, bool crash);
 

@@ -24,10 +24,12 @@ class Player : virtual public Ship {
 		Player	&operator=(Player const & other);
 		void	reset();
 		void	draw();
-		int		getLife();
-		int		getScore();
+		int		getLife() const;
+		int		getScore() const;
+		void	setScore(int score);
 	
 	private:
+	
 		int		_lives;
 		int		_score;
 

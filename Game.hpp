@@ -15,7 +15,7 @@
 # include <ncurses.h>
 # include <ctime>
 # include <string>
-# include <string.h>
+# include <cstdlib>
 # include "Player.hpp"
 # define MAX_ENEMIES 100
 
@@ -28,8 +28,8 @@ enum			keys {
 	RIGHT = 261
 };
 
-class				Game
-{
+class				Game {
+	
 	public:
 
 		Game();
@@ -52,6 +52,7 @@ class				Game
 
 	private:
 		Ship	_enemies[MAX_ENEMIES];
+		bool _enemyCollision(int x, int y);
 		clock_t	_time;
 		int		_rows;
 		int		_cols;

@@ -53,17 +53,23 @@ void Ship::shoot() {
 	int     i;
 
 	i = 0;
-	while (i < MAX_BULLETS)
-	{
-		if (_bullets[i].isCrash())
-		{
+	while (i < MAX_BULLETS) {
+		if (_bullets[i].isCrash()) {
 			_bullets[i].setxy(_x, _y + _icon.length());
 			_bullets[i].setCrash(false);
 			i = MAX_BULLETS;
 		}
-		else
+		else {
 			i++;
+		}
 	}
+}
+
+void Ship::explode() {
+	clear();
+	mvaddch(_x,_y, '*');
+	mvaddch(_x + 1 ,_y + 1, '.');
+	mvaddch(_x - 1 ,_y + 1, '.');
 }
 
 void	Ship::draw() {
@@ -81,5 +87,6 @@ Piece	Ship::getBullet(int i) {
 void	Ship::setBullet(int i, int x, int y, bool crash) {
 	if (i < MAX_BULLETS) {
 		_bullets[i].setxy(x, y);
-		_bullets[i].setCrash(crash); }
+		_bullets[i].setCrash(crash); 
+	}
 }
