@@ -55,6 +55,7 @@ void Ship::shoot() {
 	i = 0;
 	while (i < MAX_BULLETS) {
 		if (_bullets[i].isCrash()) {
+			system("afplay sfx/laser.wav &");
 			_bullets[i].setxy(_x, _y + _icon.length());
 			_bullets[i].setCrash(false);
 			i = MAX_BULLETS;
