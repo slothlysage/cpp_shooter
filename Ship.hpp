@@ -13,24 +13,29 @@
 #ifndef SHIP_HPP
 # define SHIP_HPP
 # include "Piece.hpp"
+# include "Object.hpp"
 # define MAX_BULLETS 10
 
-class Ship : virtual public Piece {
+class Ship : public Object {
 
 	public:
 	
 		Ship();
+		Ship(std::string sprite, int x, int y);
 		~Ship();
-		Ship(Ship const & other);
-		Ship	&operator=(Ship const & other);
+		Ship( Ship const & other );
+		Ship	&operator=( Ship const & other );
 		void	shoot();
 		void	draw();
 		void	explode();
-		Piece	getBullet(int i);
-		void	setBullet(int i, int x, int y, bool crash);
+		Piece	getBullet( int i );
+		void	setBullet( int i, int x, int y, bool crash );
+		void	setCrash( bool crash );
+		bool	isCrash( void ) const;
 
 	protected:
 
+		bool _crash;
 		Piece	_bullets[MAX_BULLETS];
 
 };

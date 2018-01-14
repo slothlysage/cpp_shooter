@@ -26,6 +26,7 @@ class			Piece {
 		Piece(Piece const & other);
 		Piece	&operator=(Piece const & other);
 		void	draw();
+		void  drawxy(int x, int y);
 		void	clear();
 		void	setIcon(std::string icon);
 		void	setxy(int x, int y);

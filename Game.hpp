@@ -18,6 +18,7 @@
 # include <cstdlib>
 # include "Player.hpp"
 # include "Stars.hpp"
+# include "Ship.hpp"
 # define MAX_ENEMIES 100
 # define MAX_STARS 20
 
@@ -55,7 +56,7 @@ class				Game {
 
 	private:
 
-		Ship		_enemies[MAX_ENEMIES];
+		Ship		**_junkShips;
 		Stars		*_stars;
 		bool 		_playerEnemyCollision(Player * player);
 		bool 		_enemyCollision(int x, int y);

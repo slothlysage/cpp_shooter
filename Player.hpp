@@ -14,7 +14,7 @@
 # define PLAYER_HPP
 # include "Ship.hpp"
 
-class Player : virtual public Ship {
+class Player : public Ship {
 	
 	public:
 
