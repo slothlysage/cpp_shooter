@@ -28,6 +28,7 @@ int	gameLoop(Game *game, Player *player) {
 	if (lastSec / CLOCKS_PER_SEC != now / CLOCKS_PER_SEC)
 	{
 		clear();
+		game->alignPlayer(player);
 		game->spawn();
 		lastSec = now;
 		FPS = frames;

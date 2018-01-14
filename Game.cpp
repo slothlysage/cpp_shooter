@@ -27,9 +27,14 @@ Game::Game() :
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	init_pair(3, COLOR_GREEN, COLOR_BLACK);
+	std::srand(std::time(0));
+
+	_junkShips = new Ship*[MAX_ENEMIES];
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		_enemies[i].setCrash(true);
+		_junkShips[i] = new Ship("..<=--\n.<==--\n..<=--", 0, 0);
+		_junkShips[i]->setCrash(true);
 	}
+	_stars = new Stars(MAX_STARS, 15, _rows, _cols);
 	return ;
 }
 
@@ -119,11 +124,20 @@ void	Game::gameOver() {
 
 void	Game::spawn() {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if (_enemies[i].isCrash()) {
-			_enemies[i].setxy(((std::rand() % (_rows - 4)) + 3), (_cols - _enemies[i].getIcon().length() - 1));
-			_enemies[i].setCrash(false);
+		if (_junkShips[i]->isCrash()) {
+			_junkShips[i]->setX((std::rand() % (_rows - (_junkShips[i]->getHeight() + 5))) + 3 + _junkShips[i]->getHeight());
+			_junkShips[i]->setY(_cols - (_junkShips[i]->getWidth()));
+			_junkShips[i]->setCrash(false);
 			break;
 		}
+	}
+}
+
+void Game::alignPlayer(Player * player) {
+	if (player->getX() > _rows) {
+		player->clear();
+		player->setX(_rows - 2);
+		player->draw();
 	}
 }
 
@@ -136,7 +150,7 @@ void	Game::score(Player *player, int FPS)
 	for (int i = 1; i < _cols - 1; i++) {
 		mvaddch(2,i,ACS_HLINE); }
 	w = (_cols / 8) - 1;
-	mvprintw(1,1,"%*s:%-*d",w,"Lives",w,player->getLife());
+	mvprintw(1,1,"%*s:%-*d",w,"Lives",w,player->getLives());
 	addch(ACS_VLINE);
 	printw("%*s:%-*d",w,"Score",w,player->getScore());
 	addch(ACS_VLINE);
@@ -157,22 +171,26 @@ void	Game::score(Player *player, int FPS)
 void	Game::move(Player *player, int ch) {
 	player->clear();
 	if (ch == UP && player->getX() > 3) {
-		player->setxy(player->getX() - 1, player->getY());
+		player->move(-1, 0);
 	}
 	if (ch == DOWN && player->getX() < _rows - 2) {
-		player->setxy(player->getX() + 1, player->getY());
+		player->move(1, 0);
 	}
-	if (ch == LEFT && player->getY() > 1) {
-		player->setxy(player->getX(), player->getY() - 1);
+	if (ch == LEFT && player->getY() > 4) {
+		player->move(0, -1);
 	}
 	if (ch == RIGHT && 
-			player->getY() < (int)(_cols - player->getIcon().length() - 1))
+			player->getY() < (int)(_cols - (player->getWidth() * 2) - 1))
 	{
-		player->setxy(player->getX(), player->getY() + 1);
+		player->move(0, 1);
 	}
 	if (ch == SPACE) {
 		player->shoot();
 	}
+	_stars->move();
+	_stars->setX(_rows);
+	_stars->setY(_cols);
+	_playerEnemyCollision(player);
 	player->draw();
 	for (int i = 0; i < MAX_BULLETS; i++) {
 		if (!player->getBullet(i).isCrash()) {
@@ -189,26 +207,53 @@ void	Game::move(Player *player, int ch) {
 			}
 		}
 	}
+
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if (!_enemies[i].isCrash()) {
-			_enemies[i].clear();
-			_enemies[i].setY(_enemies[i].getY() - 1);
-			if (_enemies[i].getY() <= 2) {
-				_enemies[i].setCrash(true);
+		if (!_junkShips[i]->isCrash()) {
+			_junkShips[i]->clear();
+			_junkShips[i]->move(0, -1);
+			if (_junkShips[i]->getY() <= 2) {
+				_junkShips[i]->setCrash(true);
 			} else {
-				_enemies[i].draw();
+				_junkShips[i]->draw();
 			}
 		}
 	}
 }
 
+bool Game::_playerEnemyCollision(Player * player) {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (
+			!_junkShips[i]->isCrash() &&
+			player->isObjectCollision(*(_junkShips[i]))
+		) 
+		{
+			player->blink(11);
+			player->setLives(player->getLives() - 1);
+			_junkShips[i]->setCrash(true);
+			_junkShips[i]->explode();
+			return true;
+		}
+	}
+	return true;
+}
+
+bool Game::_playerCollision(int x, int y, Player * player) {
+	if (player->isCollision(x, y)) {
+		player->blink(11);
+		player->setLives(player->getLives() - 1);
+		return true;
+	} else {
+		return false;
+	}
+}
+
 bool Game::_enemyCollision(int x, int y) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		if (!_enemies[i].isCrash()) {
-			if (_enemies[i].getX() == x && (_enemies[i].getY() - y <= 1)) {
-				_enemies[i].setCrash(true);
-				_enemies[i].clear();
-				_enemies[i].explode();
+		if (!_junkShips[i]->isCrash()) {
+			if (_junkShips[i]->isCollision(x, y)) {
+				_junkShips[i]->setCrash(true);
+				_junkShips[i]->explode();
 				return true;
 			}
 		}
@@ -217,7 +262,7 @@ bool Game::_enemyCollision(int x, int y) {
 }
 
 void	Game::checkEnd(Player *player) {
-	if (player->getLife() == 0)
+	if (player->getLives() == 0)
 		_end = true;
 }
 

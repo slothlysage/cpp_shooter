@@ -23,7 +23,7 @@ Piece::Piece(std::string icon, int x, int y, int rtime, int rspeed) :
 	_y(y), 
 	_crash(false), 
 	_rtime(rtime), 
-	_rspeed(rspeed) 
+	_rspeed(rspeed)
 {
 	return ;
 }
@@ -55,6 +55,10 @@ Piece	&Piece::operator=(Piece const & other) {
 
 void	Piece::draw() {
 	mvprintw(_x, _y, "%s", _icon.c_str());
+}
+
+void 	Piece::drawxy(int x, int y) {
+	mvprintw(x, y, "%s", _icon.c_str());
 }
 
 void	Piece::clear() {

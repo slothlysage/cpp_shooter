@@ -13,9 +13,11 @@
 #include "Player.hpp"
 
 Player::Player() : 
-	Piece(">==-", 5, 2, 0, 0), 
+	Ship(">==-", 6, 5), 
 	_lives(5), 
-	_score(0) 
+	_score(0),
+	_blinkCount(0),
+	_blinks(0)
 {
 	return ;
 }
@@ -25,14 +27,11 @@ Player::~Player() {
 }
 
 Player::Player(Player const & other) : 
-	Piece(
-		other._icon, 
+	Ship(
+		other._sprite, 
 		other._x, 
-		other._y, 
-		other._rtime, 
-		other._rspeed
+		other._y
 	),
-	Ship(),
 	_lives(other._lives),
 	_score(other._score)
 {
@@ -45,11 +44,11 @@ Player	&Player::operator=(Player const & other) {
 	}
 	this->_lives = other._lives;
 	this->_score = other._score;
-	this->_icon = other._icon;
+	this->_sprite = other._sprite;
 	this->_x = other._x;
 	this->_y = other._y;
-	this->_rtime = other._rtime;
-	this->_rspeed = other._rspeed;
+	this->_blinks = other._blinks;
+	this->_blinkCount = other._blinkCount;
 
 	return *this;
 }
@@ -58,16 +57,34 @@ void	Player::reset() {
 	setxy(5,2);
 	_lives = 5;
 	_score = 0;
+	_blinks = 0;
+	_blinkCount = 0;
 }
 
 void	Player::draw() {
-	attron(COLOR_PAIR(1));
-	Piece::draw();
-	attroff(COLOR_PAIR(1));
+	if (_lives > 0) {
+		attron(COLOR_PAIR(1));
+		if (_blinks > 0) {
+			_blinkCount++;
+			if (_blinkCount > 10) {
+				_blinkCount = 0;
+				_blinks--;
+			}
+		} 
+		if (!(_blinks % 2)) {
+			Object::draw();
+		}
+		attroff(COLOR_PAIR(1));
+	}
 }
 
-int		Player::getLife() const {
+int		Player::getLives() const {
 	return _lives;
+}
+
+void Player::setLives(int lives) {
+	_lives = lives;
+	return ;
 }
 
 void	Player::setScore(int score) {
@@ -78,3 +95,9 @@ void	Player::setScore(int score) {
 int		Player::getScore() const {
 	return _score;
 }
+
+void	Player::blink(int times) {
+	_blinks = times;
+	return ;
+}
+
