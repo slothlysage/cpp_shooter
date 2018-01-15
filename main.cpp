@@ -27,6 +27,7 @@ int	gameLoop(Game *game, Player *player) {
 	frames++;
 	if (lastSec / CLOCKS_PER_SEC != now / CLOCKS_PER_SEC)
 	{
+		game->addTimer();
 		clear();
 		game->alignPlayer(player);
 		game->spawn();
@@ -50,25 +51,16 @@ int main() {
 	Game *game = new Game;
 	Player *player = new Player;
 	bool playing = true;
-
 	game->loadScreen();
-	pid_t pid = fork();
-	if (pid == 0)
-		system("while :; do afplay sfx/music.mp3; done");
-	else
-	{
-		while (playing) {
-			playing = game->menu();
-			clear();
-			while (playing && gameLoop(game, player)) {}
-			game->resetGame(player);
-		}
+	while (playing) {
+		playing = game->menu();
+		clear();
+		system("afplay sfx/music.mp3 &");
+		while (playing && gameLoop(game, player)) {}
+		game->resetGame(player);
+	}
 	game->loadScreen();
 	delete(game);
 	delete(player);
-	}
-	std::cout << pid;
-	kill(pid + 1, SIGKILL);
-	system("killall afplay");
 	return (0);
 	}
