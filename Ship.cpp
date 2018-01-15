@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ship.cpp                                           :+:      :+:    :+:   */
+/*   Ship.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 20:37:59 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/12 23:22:00 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/14 14:03:43 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Ship.hpp"
 
 
-Ship::Ship() : 
-	Object("<-=", 10, 10) 
+Ship::Ship() :
+	Object("<-=", 10, 10)
 {
 	for (int i = 0; i < MAX_BULLETS; i++){
 		_bullets[i].setIcon("~");
@@ -38,9 +38,9 @@ Ship::~Ship() {
 Ship::Ship(Ship const & other) :
 
 	Object(
-		other._sprite, 
-		other._x, 
-		other._y 
+		other._sprite,
+		other._x,
+		other._y
 	)
 {
 	return ;
@@ -62,12 +62,8 @@ void Ship::shoot() {
 	i = 0;
 	while (i < MAX_BULLETS) {
 		if (_bullets[i].isCrash()) {
-<<<<<<< HEAD
 			system("afplay sfx/laser.wav &");
-			_bullets[i].setxy(_x, _y + _icon.length());
-=======
 			_bullets[i].setxy(_x, _y + 1);
->>>>>>> 1fc74ecb4af67bbabf7f41b2340b0591493e1cd7
 			_bullets[i].setCrash(false);
 			i = MAX_BULLETS;
 		}

@@ -32,7 +32,7 @@ enum			keys {
 };
 
 class				Game {
-	
+
 	public:
 
 		Game();
@@ -41,6 +41,7 @@ class				Game {
 		Game	&operator=(Game const & other);
 		void	resetParams();
 		void	resetGame(Player *player);
+		void  addTimer();
 		void	drawBorder();
 		void	loadScreen();
 		bool	menu();
@@ -62,6 +63,7 @@ class				Game {
 		bool 		_enemyCollision(int x, int y);
 		bool 		_playerCollision(int x, int y, Player * player);
 		clock_t	_time;
+		int			_timer;
 		int			_rows;
 		int			_cols;
 		bool		_end;

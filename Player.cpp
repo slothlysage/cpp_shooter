@@ -12,9 +12,9 @@
 
 #include "Player.hpp"
 
-Player::Player() : 
-	Ship(">==-", 6, 5), 
-	_lives(5), 
+Player::Player() :
+	Ship("|\\____\n|@____)", 8, 8),
+	_lives(5),
 	_score(0),
 	_blinkCount(0),
 	_blinks(0)
@@ -26,10 +26,10 @@ Player::~Player() {
 	return ;
 }
 
-Player::Player(Player const & other) : 
+Player::Player(Player const & other) :
 	Ship(
-		other._sprite, 
-		other._x, 
+		other._sprite,
+		other._x,
 		other._y
 	),
 	_lives(other._lives),
@@ -70,7 +70,7 @@ void	Player::draw() {
 				_blinkCount = 0;
 				_blinks--;
 			}
-		} 
+		}
 		if (!(_blinks % 2)) {
 			Object::draw();
 		}
@@ -83,6 +83,7 @@ int		Player::getLives() const {
 }
 
 void Player::setLives(int lives) {
+		system("afplay sfx/life.wav &");
 	_lives = lives;
 	return ;
 }
@@ -100,4 +101,3 @@ void	Player::blink(int times) {
 	_blinks = times;
 	return ;
 }
-

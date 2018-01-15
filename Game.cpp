@@ -12,9 +12,10 @@
 
 #include "Game.hpp"
 
-Game::Game() : 
-	_time(clock()), 
-	_end(false) 
+Game::Game() :
+	_time(clock()),
+	_timer(0),
+	_end(false)
 {
 	initscr();
 	cbreak();
@@ -31,7 +32,7 @@ Game::Game() :
 
 	_junkShips = new Ship*[MAX_ENEMIES];
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		_junkShips[i] = new Ship("..<=--\n.<==--\n..<=--", 0, 0);
+		_junkShips[i] = new Ship("..___/|__\n.\\______|(`>", 0, 0);
 		_junkShips[i]->setCrash(true);
 	}
 	_stars = new Stars(MAX_STARS, 15, _rows, _cols);
@@ -40,10 +41,11 @@ Game::Game() :
 
 Game::~Game() {
 	endwin();
+	system("killall afplay");
 	return ;
 }
 
-Game::Game(Game const & other) : 
+Game::Game(Game const & other) :
 	_time(other._time),
 	_rows(other._rows),
 	_cols(other._cols),
@@ -70,7 +72,16 @@ void	Game::resetParams() {
 void	Game::resetGame(Player *player) {
 	player->reset();
 	_time = clock();
+	_timer = 0;
 	_end = false;
+	system("killall afplay");
+	system("afplay sfx/over2.wav &");
+}
+
+void  Game::addTimer() {
+	_timer++;
+	if (_timer % 15 == 0)
+		system("afplay sfx/music.mp3 &");
 }
 
 void	Game::drawBorder() {
@@ -154,14 +165,14 @@ void	Game::score(Player *player, int FPS)
 	addch(ACS_VLINE);
 	printw("%*s:%-*d",w,"Score",w,player->getScore());
 	addch(ACS_VLINE);
-	printw("%*s:%-*d",w,"Timer",w,(clock() - _time) / CLOCKS_PER_SEC);
+	printw("%*s:%-*d",w,"Timer",w,_timer);
 	addch(ACS_VLINE);
-	printw("%*s:%-*d",w,"FPS",w,FPS);
+	printw("%*s:%-*d", w,"FPS",w,FPS);
 	mvaddch(2,0,ACS_LTEE);
 	mvaddch(2,_cols - 1,ACS_RTEE);
-	mvaddch(0,2*w+2,ACS_TTEE);
-	mvaddch(0,4*w+4,ACS_TTEE);
-	mvaddch(0,6*w+6,ACS_TTEE);
+	mvaddch(0,2*w+2 ,ACS_TTEE);
+	mvaddch(0,4*w+ 4,ACS_TTEE);
+	mvaddch(0,6*w +6,ACS_TTEE);
 	mvaddch(2,2*w+2,ACS_BTEE);
 	mvaddch(2,4*w+4,ACS_BTEE);
 	mvaddch(2,6*w+6,ACS_BTEE);
@@ -179,7 +190,7 @@ void	Game::move(Player *player, int ch) {
 	if (ch == LEFT && player->getY() > 4) {
 		player->move(0, -1);
 	}
-	if (ch == RIGHT && 
+	if (ch == RIGHT &&
 			player->getY() < (int)(_cols - (player->getWidth() * 2) - 1))
 	{
 		player->move(0, 1);
@@ -226,7 +237,7 @@ bool Game::_playerEnemyCollision(Player * player) {
 		if (
 			!_junkShips[i]->isCrash() &&
 			player->isObjectCollision(*(_junkShips[i]))
-		) 
+		)
 		{
 			player->blink(11);
 			player->setLives(player->getLives() - 1);
