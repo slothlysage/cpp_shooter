@@ -12,6 +12,7 @@
 
 #include "Ship.hpp"
 
+
 Ship::Ship() : 
 	Object("<-=", 10, 10) 
 {
@@ -35,6 +36,7 @@ Ship::~Ship() {
 }
 
 Ship::Ship(Ship const & other) :
+
 	Object(
 		other._sprite, 
 		other._x, 
@@ -60,7 +62,12 @@ void Ship::shoot() {
 	i = 0;
 	while (i < MAX_BULLETS) {
 		if (_bullets[i].isCrash()) {
+<<<<<<< HEAD
+			system("afplay sfx/laser.wav &");
+			_bullets[i].setxy(_x, _y + _icon.length());
+=======
 			_bullets[i].setxy(_x, _y + 1);
+>>>>>>> 1fc74ecb4af67bbabf7f41b2340b0591493e1cd7
 			_bullets[i].setCrash(false);
 			i = MAX_BULLETS;
 		}
@@ -72,6 +79,7 @@ void Ship::shoot() {
 
 void Ship::explode() {
 	clear();
+	system("afplay sfx/explode.wav &");
 	mvaddch(_x,_y, '*');
 	mvaddch(_x + 1 ,_y + 1, '*');
 	mvaddch(_x - 1 ,_y + 1, '*');
@@ -92,7 +100,7 @@ Piece	Ship::getBullet(int i) {
 void	Ship::setBullet(int i, int x, int y, bool crash) {
 	if (i < MAX_BULLETS) {
 		_bullets[i].setxy(x, y);
-		_bullets[i].setCrash(crash); 
+		_bullets[i].setCrash(crash);
 	}
 }
 
