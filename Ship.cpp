@@ -6,7 +6,7 @@
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 20:37:59 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/14 14:03:43 by eramirez         ###   ########.fr       */
+/*   Updated: 2018/01/14 18:52:31 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ void Ship::shoot() {
 void Ship::explode() {
 	clear();
 	system("afplay sfx/explode.wav &");
-	mvaddch(_x,_y, '*');
-	mvaddch(_x + 1 ,_y + 1, '*');
-	mvaddch(_x - 1 ,_y + 1, '*');
+	attron(COLOR_PAIR(5));
+	mvprintw(_x,_y, "*.*.*");
+	mvprintw(_x + 1 ,_y + 1, "*.*");
+	mvprintw(_x - 1 ,_y + 1, "*.*");
+	attroff(COLOR_PAIR(5));
 }
 
 void	Ship::draw() {

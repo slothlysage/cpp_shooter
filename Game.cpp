@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   game.cpp                                           :+:      :+:    :+:   */
+/*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjones <sjones@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 17:54:07 by sjones            #+#    #+#             */
-/*   Updated: 2018/01/13 15:45:44 by sjones           ###   ########.fr       */
+/*   Updated: 2018/01/14 19:00:33 by sjones           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ Game::Game() :
 	init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	init_pair(3, COLOR_GREEN, COLOR_BLACK);
+	init_pair(4, COLOR_MAGENTA, COLOR_BLACK);
+	init_pair(5, COLOR_YELLOW, COLOR_BLACK);
 	std::srand(std::time(0));
 
 	_junkShips = new Ship*[MAX_ENEMIES];
@@ -156,23 +158,24 @@ void	Game::score(Player *player, int FPS)
 {
 	int w;
 
-	attron(COLOR_PAIR(3));
 	resetParams();
+	w = (_cols / 8) - 1;
+	mvprintw(1,1,"%*s:%-*d ",w,"Lives",w,player->getLives());
+	printw("%*s:%-*d ",w,"Score",w,player->getScore());
+	printw("%*s:%-*d ",w,"Timer",w,_timer);
+	printw("%*s:%-*d", w,"FPS",w,FPS);
+	attron(COLOR_PAIR(3));
 	for (int i = 1; i < _cols - 1; i++) {
 		mvaddch(2,i,ACS_HLINE); }
-	w = (_cols / 8) - 1;
-	mvprintw(1,1,"%*s:%-*d",w,"Lives",w,player->getLives());
-	addch(ACS_VLINE);
-	printw("%*s:%-*d",w,"Score",w,player->getScore());
-	addch(ACS_VLINE);
-	printw("%*s:%-*d",w,"Timer",w,_timer);
-	addch(ACS_VLINE);
-	printw("%*s:%-*d", w,"FPS",w,FPS);
 	mvaddch(2,0,ACS_LTEE);
 	mvaddch(2,_cols - 1,ACS_RTEE);
+	mvaddch(1,_cols - 1,ACS_VLINE);
 	mvaddch(0,2*w+2 ,ACS_TTEE);
 	mvaddch(0,4*w+ 4,ACS_TTEE);
 	mvaddch(0,6*w +6,ACS_TTEE);
+	mvaddch(1,2*w+2 ,ACS_VLINE);
+	mvaddch(1,4*w+ 4,ACS_VLINE);
+	mvaddch(1,6*w +6,ACS_VLINE);
 	mvaddch(2,2*w+2,ACS_BTEE);
 	mvaddch(2,4*w+4,ACS_BTEE);
 	mvaddch(2,6*w+6,ACS_BTEE);
@@ -181,7 +184,7 @@ void	Game::score(Player *player, int FPS)
 
 void	Game::move(Player *player, int ch) {
 	player->clear();
-	if (ch == UP && player->getX() > 3) {
+	if (ch == UP && player->getX() > 4) {
 		player->move(-1, 0);
 	}
 	if (ch == DOWN && player->getX() < _rows - 2) {

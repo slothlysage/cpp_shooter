@@ -84,7 +84,8 @@ void Stars::move( void ) {
 }
 
 void Stars::_render( int yChange ) {
-  for (int i = 0; i < _nbStars; i++) {
+	attron(COLOR_PAIR(4));
+	for (int i = 0; i < _nbStars; i++) {
     _stars[i]->clear();
     _stars[i]->setY(_stars[i]->getY() + yChange);
     if (_stars[i]->getY() < 2) {
@@ -93,5 +94,6 @@ void Stars::_render( int yChange ) {
     }
     _stars[i]->draw();
   }
+	attroff(COLOR_PAIR(4));
   return ;
 }
